@@ -187,6 +187,16 @@ CREATE TABLE lesson.classes (
 
 > Complete the `CREATE TABLE` statement for the `students` table.
 
+CREATE TABLE lesson.students (
+  id INTEGER PRIMARY KEY, -- primary key
+  name VARCHAR NOT NULL, -- not null
+  address VARCHAR NOT NULL, -- not null
+  phone VARCHAR NOT NULL,
+  email VARCHAR NOT NULL,
+  class_id INTEGER REFERENCES lesson.classes(id) -- foreign key
+);
+
+
 ### 3.2 Create indexes
 
 Indexes are used to improve the performance of queries. They are not required but are recommended for tables with many rows. They are used to _retrieve data from the database more quickly than otherwise_. Indexes are created using one or more columns of a database table. The users cannot see the indexes, they are just used to speed up searches/queries.
@@ -209,10 +219,12 @@ ALTER TABLE lesson.classes ADD COLUMN start_date DATE;
 ```
 
 Rename column 'name' to 'code' in table classes.
-
+## not able alter due to the foreign key
+## We can change to sequence on how to alter the column before linking the foreign key.
 ```sql
 ALTER TABLE lesson.classes RENAME name TO code;
 ```
+
 
 ## Part 4 - Tables vs Views
 
@@ -233,6 +245,12 @@ FROM lesson.students;
 ```
 
 > Create a view `teachers_view` with the same columns as `students_view` but for the `teachers` table.
+
+''' sql
+CREATE VIEW lesson.teachers_view AS
+SELECT id, name, email
+FROM lesson.teachers;
+
 
 We will learn more about the syntax in the next lesson.
 
@@ -267,13 +285,18 @@ WHERE id = 4;
 Let's export the data from the student table into a CSV file delimited with `|`. Remember to prepend the full directory path to the CSV file.
 
 ```sql
-COPY (SELECT * FROM lesson.students) TO 'students_new.csv' WITH (HEADER 1, DELIMITER '|');
+COPY (SELECT * FROM lesson.students) TO 'C:\Users\CHINGSU1\Downloads\students_new.csv' WITH (HEADER 1, DELIMITER '|');
 ```
 
 We can also export the data into a JSON file (you will learn more about JSON in Module 2).
 
 ```sql
-COPY (SELECT * FROM lesson.students) TO 'students.json';
+COPY (SELECT * FROM lesson.students) TO 'C:\Users\CHINGSU1\Downloads\students.json';
 ```
 
 > Repeat the above steps for the `teachers` table.
+COPY (SELECT * FROM lesson.teachers) TO 'C:\Users\CHINGSU1\Downloads\teachers_new.csv' WITH (HEADER 1, DELIMITER '|');
+
+COPY (SELECT * FROM lesson.teachers) TO 'C:\Users\CHINGSU1\Downloads\students.json';
+
+
